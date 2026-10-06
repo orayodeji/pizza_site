@@ -1,0 +1,67 @@
+.auth-footer img {
+    width: 50px;
+    height: 50px; 
+}
+
+
+/* is Phone */
+@media (max-width: 767px) {
+     .auth-layout-logo-image > img {
+        width: 53px;
+        height: 53px;
+    }
+}
+
+
+/* is Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  
+   .auth-layout-logo-image > img {
+        width: 80px;
+        height: 80px;
+    }
+    .auth-footer img {
+ width: 53px;
+ height: 53px; 
+}
+}
+
+/* Ipad */
+@media (min-width: 1024px) and (max-width: 1279px) {
+   .auth-layout-logo-image > img {
+        width: 100px;
+        height: 100px;
+    }
+
+}
+
+/* desktop/laptop */
+@media(min-width: 1280px) and (max-width: 1535px) {
+    .auth-layout-logo-image > img {
+        width: 133px;
+        height: 133px;
+    }
+
+    .auth-footer img {
+        width: 53px;
+        height: 53px; 
+    }
+}
+
+/* ultra desktop */
+@media (min-width: 1536px)  {
+    .auth-layout-logo-image > img {
+        width: 153px;
+        height: 153px;
+    }
+
+    .auth-footer img {
+        width: 60px;
+        height: 60px; 
+    }
+}
+
+
+/* .reset-password img {
+
+} */

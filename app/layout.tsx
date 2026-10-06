@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Roboto, Inter } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-roboto",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +36,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${roboto.variable} ${geistMono.variable} h-full antialiased bg-secondary-light`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body
+        className="scrollbar-color min-h-dvh"
+        // style={{
+        //   minHeight: "100vh",
+        //   backgroundColor: "red",
+        // }}
+      >
+        {children}
+      </body>
     </html>
   );
 }

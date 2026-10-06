@@ -1,0 +1,206 @@
+
+/* first section */
+.fs-main {
+    min-height: 90vh;
+}
+
+
+.ss-main {
+    min-height: 100vh;
+}
+.img-class {
+    width: 400px;
+    height: 400px;
+}
+
+
+
+
+.pizza-tile-box {
+    width: 300px; 
+}
+
+
+.extra-tile-box {
+    width: 140px; 
+}
+
+
+.promo-height {
+    height: 700px;
+}
+
+.text-light-grey {
+    color: #666666;
+}
+
+
+.fresh-cream-txt {
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+}
+.explore-tiles::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */   
+}
+
+
+
+.pastry-tile-box {
+    width: 300px; 
+}
+
+
+.font-inter {
+    font-family: var(--font-inter);
+    /* font-size: 13px; */
+}
+
+
+
+
+
+
+/* list all media of css below */
+
+  /* xs: 480,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1440,
+  xxl: 1920, */
+
+
+
+  .footer-sm img {
+    width: 20px;
+    height: 20px;
+  }
+
+
+ .cart-tile img {
+    width: 38px;
+    height: 39px;
+ } 
+
+ 
+/* is Phone */
+@media (max-width: 767px) {
+    .navbar-img > img { 
+        width: 65px;
+        height: 68px;
+    }
+    .pastry > div {
+       height: 550px;
+    }
+    .fs-main {
+        padding-top: 68px;
+    }
+}
+
+
+
+
+
+/* is Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  
+    .navbar-img > img {
+        width: 70px;
+        height: 73px;
+    }
+    .fs-main {
+        padding-top: 73px;
+    }
+    .fs-main > img {
+        width: 600px;
+        height: 70%;
+    }
+    .pastry > div {
+       height: 550px;
+    }
+    .sixth-section .img-div {
+        height: 525px;
+    } 
+}
+
+/* Ipad */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .navbar-img > img {
+        width: 77px;
+        height: 80px;
+    }
+
+    .fs-main {
+        padding-top: 80px;
+    }
+
+    .fs-main > img {
+        width: 700px;
+        height: 70%;
+    }
+
+    .pastry > div {
+       height: 450px;
+    }
+
+     .sixth-section .img-div {
+        height: 525px;
+    } 
+    .pastry-tile-box {
+        width: 270px; 
+    }
+
+}
+
+/* desktop/laptop */
+@media(min-width: 1280px) and (max-width: 1535px) {
+    .navbar-img > img {
+        width: 83px;
+        height: 87px;
+    }
+    .fs-main {
+        padding-top: 87px;
+    }
+
+    .fs-main > img {
+        width: 750px;
+        height: 70%;
+    }
+    .pastry > div {
+       height: 550px;
+    }
+     .sixth-section .img-div {
+        height: 525px;
+    } 
+}
+
+/* ultra desktop */
+@media (min-width: 1536px)  {
+    .navbar-img > img {
+        width: 87px;
+        height: 90px;
+    }
+
+    .pastry > div {
+       height: 550px;
+    }
+
+    .fs-main {
+        padding-top: 90px;
+    }
+     .fs-main > img {
+        width: 770px;
+        height: 70%;
+    }
+     .sixth-section .img-div {
+        height: 525px;
+    } 
+
+     .cart-tile img {
+    width: 55px;
+    height: 55px;
+ }
+}
+
+
