@@ -1,65 +1,69 @@
 "use client";
+import { AuthFooter } from "@/components/auth/auth-footer";
 import TextInput from "@/components/UI/text-input";
 import Link from "next/link";
-import { useState } from "react";
-import { AuthFooter } from "@/components/auth/auth-footer";
-
+import { FormEvent, useState } from "react";
 export default function Login() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((obj) => ({
-      ...obj,
-      [name]: value,
-    }));
-  };
-
+  const [form, setForm] = useState({ email: "", password: "" });
   return (
-    <div className="md:py-8 xl:py-16 xl:px-48">
-      <p className=" xl:text-2xl font-normal text-center">Login</p>
-
-      <div>
-        <TextInput
-          label="Email"
-          id="email"
-          name="email"
-          placeholder="Enter your email address or username"
-          value={form.email}
-          onChange={handleChange}
+    <div className="px-6 py-8 sm:px-10 sm:py-10">
+      <div className="mx-auto max-w-md">
+        <p className="text-xs font-bold tracking-[0.16em] text-primary/60">
+          WELCOME BACK
+        </p>
+        <h1 className="mt-2 text-3xl font-extrabold text-primary">
+          Sign in to your account
+        </h1>
+        <p className="mt-2 text-sm leading-6 text-primary/60">
+          Pick up where your last order left off.
+        </p>
+        <form
+          onSubmit={(event: FormEvent) => event.preventDefault()}
+          className="mt-7 space-y-4"
+        >
+          <TextInput
+            label="Email address"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={(event) =>
+              setForm({ ...form, email: event.target.value })
+            }
+          />
+          <div>
+            <TextInput
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={(event) =>
+                setForm({ ...form, password: event.target.value })
+              }
+            />
+            <Link
+              href="/forget-password"
+              className="mt-2 block w-fit text-sm font-bold text-primary underline underline-offset-4"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <button
+            disabled={!form.email || !form.password}
+            type="submit"
+            className="w-full rounded-xl bg-primary px-4 py-3.5 text-sm font-bold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Sign in
+          </button>
+        </form>
+        <AuthFooter
+          routeName="New here? Create an account"
+          routePath="/signup"
         />
       </div>
-      <div>
-        <TextInput
-          type="password"
-          label="Password"
-          name="password"
-          placeholder="Enter your password"
-          value={form.password}
-          onChange={handleChange}
-        />
-        <Link
-          className="font-semibold text-right block text-gray-600 hover:text-gray-800"
-          href={"/forget-password"}
-        >
-          {/* forget password click here  */}
-          Forget Password?
-        </Link>
-      </div>
-      <div className=" flex justify-center">
-        <button
-          type="submit"
-          className="mt-4 rounded-md px-4 py-4 w-11/12 text-xl disabled:bg-gray-400 disabled:text-gray-700 bg-primary hover:bg-secondary-light text-white font-semibold hover:text-black"
-        >
-          Login
-        </button>
-      </div>
-      <p className="text-center text-sm font-bold mt-3">or login with</p>
-
-      <AuthFooter routeName="Create Account" routePath="/signup" />
     </div>
   );
 }

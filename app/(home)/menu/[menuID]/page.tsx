@@ -8,8 +8,9 @@ import { MenuPagePizzas } from "@/utils/menu_pizza";
 import { MenuPageCupCakes } from "@/utils/menu_cup_cake";
 import { getNameById, splitIntoThree } from "@/utils";
 import { ExtraPizzaTiles } from "@/utils/menu";
-import Image from "next/image";
+import { ArrowLeft, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Menu Page",
@@ -31,56 +32,73 @@ export default async function SingleMenuPage({
     MenuPageBurgers,
   ];
   const paramsArr = arrMenus[selectedId - 1];
+  const categoryName = getNameById(selectedId);
+
+  if (!Number.isInteger(selectedId) || !paramsArr || !categoryName) {
+    notFound();
+  }
+
   const [first, second, third] = splitIntoThree(paramsArr);
 
   // split arr into three
 
   return (
-    <>
-      <div className=" bg-secondary py-4">
-        <p className="text-center font-bold text-xl">Select Menu Item</p>
-        <div className="flex justify-around overflow-x-auto snap-x snap-mandatory w-full explore-tiles overflow-y-hidden  py-10 gap-10 scroll-px-10 px-4 bg-secondary ">
-          {ExtraPizzaTiles.map((obj, index) => (
+    <main>
+      <section className="bg-primary text-white">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+          <Link href="/menu" className="inline-flex items-center gap-2 text-sm font-bold text-secondary-light transition hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            <ArrowLeft size={17} aria-hidden="true" /> All menu categories
+          </Link>
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold tracking-wide text-secondary-light">
+                <UtensilsCrossed size={15} aria-hidden="true" /> {paramsArr.length} ITEMS TO EXPLORE
+              </div>
+              <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{categoryName}</h1>
+              <p className="mt-2 text-sm text-white/70 sm:text-base">Pick a favourite, then order it your way.</p>
+            </div>
+            <p className="text-sm font-medium text-white/60">Scroll to browse categories</p>
+          </div>
+        </div>
+      </section>
+
+      <nav className="border-b border-primary/10 bg-white" aria-label="Menu categories">
+        <div className="mx-auto flex max-w-7xl gap-3 overflow-x-auto px-4 py-4 sm:px-6 lg:px-8">
+          {ExtraPizzaTiles.map((obj) => (
             <Link
-              href={{ pathname: `/menu/${obj.id}` }}
-              className={`flex flex-col ${selectedId === obj.id ? "bg-primary" : ""} items-center justify-between px-2 pt-6 pb-3 rounded-lg`}
-              key={index}
+              href={`/menu/${obj.id}`}
+              className={`group flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold transition ${selectedId === obj.id ? "bg-primary text-white shadow-sm" : "text-primary/70 hover:bg-secondary-light"}`}
+              key={obj.id}
             >
-              <Image
-                src={obj.photoSrc}
-                alt={obj.name}
-                style={{}}
-                className=" w-40 h-40"
-              />
-              <p
-                className={`text-center font-semibold mt-5 ${selectedId === obj.id ? "text-white" : "text-black"} `}
-              >
-                {obj.name}
-              </p>
+              <span className={`flex size-8 items-center justify-center rounded-lg ${selectedId === obj.id ? "bg-white/15" : "bg-secondary-light"}`}>
+                <span className="text-xs">{obj.id}</span>
+              </span>
+              {obj.name}
             </Link>
           ))}
         </div>
-      </div>
-      <div className="xl:px-48 xl:py-16 md:py-8 md:px-20">
+      </nav>
+
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <MenuPhotoTab
-          text={`Premimum ${getNameById(selectedId)}`}
+          text={`Featured ${categoryName}`}
           paramsID={selectedId}
           arr={first}
           isPizza={selectedId === 1}
         />
         <MenuPhotoTab
-          text={`Favorite ${getNameById(selectedId)}  `}
+          text={`More ${categoryName} favourites`}
           arr={second}
           paramsID={selectedId}
           isPizza={selectedId === 1}
         />
         <MenuPhotoTab
           paramsID={selectedId}
-          text={`Classic ${getNameById(selectedId)} `}
+          text={`Discover more ${categoryName}`}
           arr={third}
           isPizza={selectedId === 1}
         />
       </div>
-    </>
+    </main>
   );
 }

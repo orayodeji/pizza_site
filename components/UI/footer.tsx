@@ -1,98 +1,121 @@
-"use client";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
 import logo1 from "@/public/footer/footer_fb.png";
 import logo2 from "@/public/footer/footer_ig.png";
 import logo3 from "@/public/footer/footer_yt.png";
 import logo4 from "@/public/footer/footer_tw.png";
+import footerLeft from "@/public/footer/footer_left_feather.png";
+import footerRight from "@/public/footer/footer_right_feather.png";
 
-type LogoProps = {
-  id: number;
-  photoSrc: string | StaticImageData;
-  name: string;
-};
-
-const LogoFooterTiles: LogoProps[] = [
-  { photoSrc: logo1, id: 1, name: "facebook" },
-  { photoSrc: logo2, id: 2, name: "instagram" },
-  { photoSrc: logo3, id: 3, name: "youtube" },
-  { photoSrc: logo4, id: 4, name: "twitter" },
+type FooterLink = { label: string; href: string };
+const exploreLinks: FooterLink[] = [
+  { label: "Menu", href: "/menu" },
+  { label: "Deals", href: "/deals" },
+  { label: "Track order", href: "/tracker" },
 ];
+const supportLinks: FooterLink[] = [
+  { label: "Find a store", href: "/stores" },
+  { label: "My account", href: "/profile" },
+  { label: "Help & support", href: "/profile/support" },
+];
+const legalLinks: FooterLink[] = [
+  { label: "Terms & conditions", href: "#" },
+  { label: "Terms of use", href: "#" },
+  { label: "Privacy policy", href: "#" },
+  { label: "Cookie notice", href: "#" },
+];
+const socialLinks: { label: string; image: StaticImageData }[] = [
+  { label: "Facebook", image: logo1 },
+  { label: "Instagram", image: logo2 },
+  { label: "YouTube", image: logo3 },
+  { label: "Twitter", image: logo4 },
+];
+
+function FooterLinkGroup({
+  title,
+  links,
+}: {
+  title: string;
+  links: FooterLink[];
+}) {
+  return (
+    <div>
+      <h2 className="text-xs font-extrabold uppercase tracking-[0.16em] text-secondary-light">
+        {title}
+      </h2>
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="text-sm font-medium text-white/70 transition hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function Footer() {
   return (
-    <footer className="w-full min-h-60 relative grid grid-cols-5 bg-white 2xl:px-52 xl:px-44 md:px-16 pt-16 pb-4 xl:gap-8 md:gap-4">
-      <div className=" font-semibold px-4 xl:text-xl md:text-lg">
-        <Link href="#" className="hover:font-bold block">
-          Menu
-        </Link>
-        <Link href="#" className="hover:font-bold block mt-8">
-          Deals
-        </Link>
-        <Link href="#" className="hover:font-bold block mt-8">
-          Cart
-        </Link>
-      </div>
-      <div className=" font-semibold px-4 xl:text-xl md:text-lg">
-        <Link href="#" className="hover:font-bold block">
-          Stores
-        </Link>
-        <Link href="#" className="hover:font-bold block mt-8">
-          Tracker
-        </Link>
-      </div>
-      <div className="flex flex-col items-center">
-        <Image
-          src="/img/logo.png"
-          alt="logo picture"
-          width={163}
-          height={163}
-          style={{}}
-        />
-        <div className="flex justify-around w-full">
-          {LogoFooterTiles.map((obj, index) => (
-            <div
-              key={index}
-              className="p-2 rounded-full bg-secondary footer-sm"
+    <footer className="relative overflow-hidden bg-primary text-white">
+      <Image
+        src={footerLeft}
+        alt=""
+        className="pointer-events-none absolute bottom-0 left-0 hidden max-w-42 opacity-25 lg:block"
+      />
+      <Image
+        src={footerRight}
+        alt=""
+        className="pointer-events-none absolute bottom-0 right-0 hidden max-w-42 opacity-25 lg:block"
+      />
+      <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_.8fr_.8fr_.8fr]">
+          <div className="max-w-sm">
+            <Link
+              href="/"
+              className="inline-flex focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
             >
-              <Image src={obj.photoSrc} alt={obj.name} style={{}} />
+              <Image
+                src="/img/logo.png"
+                alt="Pizza bakery home"
+                width={92}
+                height={92}
+                className="h-auto w-20"
+              />
+            </Link>
+            <p className="mt-5 text-sm leading-6 text-white/70">
+              Freshly prepared pizza, sweet treats and easy ordering for every
+              craving.
+            </p>
+            <div className="mt-6 flex gap-2">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href="#"
+                  aria-label={social.label}
+                  className="flex size-9 items-center justify-center rounded-full bg-white/10 p-2 transition hover:-translate-y-0.5 hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                >
+                  <Image
+                    src={social.image}
+                    alt=""
+                    className="h-full w-full object-contain"
+                  />
+                </a>
+              ))}
             </div>
-          ))}
+          </div>
+          <FooterLinkGroup title="Explore" links={exploreLinks} />
+          <FooterLinkGroup title="Support" links={supportLinks} />
+          <FooterLinkGroup title="Information" links={legalLinks} />
         </div>
-      </div>
-      <div className="font-normal font-inter xl:text-lg md:text-base px-4">
-        <Link href="#" className=" block">
-          Terms & Condition
-        </Link>
-        <Link href="#" className="block mt-8">
-          Terms of Use
-        </Link>
-        <Link href="#" className="block mt-8">
-          Privacy Policy
-        </Link>
-      </div>
-      <div className="font-normal font-inter xl:text-lg md:text-base px-4">
-        <Link href="#" className="block">
-          Cookie Notice
-        </Link>
-        <Link href="#" className="block mt-8">
-          FAQ's
-        </Link>
-      </div>
-
-      {/* Feather Positioning  */}
-
-      <div>
-        <img
-          src="footer/footer_left_feather.png"
-          alt="Footer Right Feather"
-          className="left-0 bottom-0 absolute"
-        />
-        <img
-          src="footer/footer_right_feather.png"
-          alt="Footer Right Feather"
-          className="absolute right-0 bottom-0"
-        />
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 Pizza Bakery. All rights reserved.</p>
+          <p>Made fresh, delivered with care.</p>
+        </div>
       </div>
     </footer>
   );

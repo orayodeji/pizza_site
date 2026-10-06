@@ -1,5 +1,6 @@
 import LandingImage from "@/public/home/seven/landing_image.png";
 import Image from "next/image";
+import Link from "next/link";
 
 const landingImgStyle = {
   width: "800px",
@@ -7,25 +8,10 @@ const landingImgStyle = {
 };
 export function SeventhSection() {
   return (
-    <div className="relative bg-primary py-2 md:px-24 xl:px-40 grid grid-cols-2 items-center xl:gap-8 md:gap-6">
-      <div className=" text-center text-white">
-        <p className="xl:text-4xl md:text-3xl uppercase font-extrabold  xl:mb-10 md:mb-6">
-          We Deliver!
-        </p>
-        <p className="xl:text-xl/8 md:text-lg/6 font-normal mb-10">
-          we've made Take 'n' Bake even easier. Now order <br /> delivery right
-          through our website. Delivery is <br /> available at participating
-          locations.
-        </p>
-
-        <div>
-          <button className=" capitalize font-medium text-sm bg-white text-primary px-10 py-2 rounded-md xl:my-5 md:my-3">
-            Tell me more
-          </button>
-        </div>
+    <div className="relative grid items-center gap-8 overflow-hidden bg-primary px-6 py-12 sm:px-10 lg:grid-cols-2 lg:px-20 lg:py-16">
+      <div className="mx-auto max-w-xl text-center text-white lg:mx-0 lg:text-left"><p className="text-xs font-bold tracking-[0.18em] text-secondary-light">HOT, FRESH &amp; ON ITS WAY</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">We deliver!</h2><p className="mt-4 text-sm leading-6 text-white/75 sm:text-base">Take &apos;n&apos; Bake just got easier. Order delivery through our website and enjoy fresh pizza at home.</p><Link href="/stores" className="mt-7 inline-block rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary transition hover:bg-secondary-light">Find delivery near you</Link>
       </div>
-      <div>
-        <Image src={LandingImage} alt="Landing Image" style={landingImgStyle} />
+      <div className="mx-auto w-full max-w-xl"><Image src={LandingImage} alt="Pizza delivery" style={landingImgStyle} className="h-auto w-full" />
       </div>
     </div>
   );

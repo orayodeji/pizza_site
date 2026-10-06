@@ -12,26 +12,27 @@ export function AuthFooter({
 }) {
   return (
     <>
-      <div className="flex justify-center auth-footer mt-3">
+      <p className="mt-7 text-center text-xs font-bold uppercase tracking-[0.14em] text-primary/55">or continue with</p>
+      <div className="flex justify-center gap-3 mt-3">
         <Link
           href={{ pathname: "/social-auth", query: { social: "facebook" } }}
           type="button"
-          className="outline-0 mr-1 cursor-pointer"
+          className="rounded-xl border border-primary/15 p-2 transition hover:-translate-y-0.5 hover:bg-secondary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <Image src={FBLogo} alt="" style={{}} />
         </Link>
         <Link
           href={{ pathname: "/social-auth", query: { social: "google" } }}
           type="button"
-          className="outline-0 ml-1 cursor-pointer"
+          className="rounded-xl border border-primary/15 p-2 transition hover:-translate-y-0.5 hover:bg-secondary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <Image src={GLogo} alt="" style={{}} />
         </Link>
       </div>
-      <div className="flex justify-center pt-7 pb-3">
+      <div className="flex justify-center pt-6">
         <Link
           href={routePath}
-          className=" block hover:underline text-xl font-semibold underline"
+          className="text-sm font-bold text-primary underline underline-offset-4 transition hover:text-primary/70"
         >
           {routeName}
         </Link>

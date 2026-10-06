@@ -1,73 +1,17 @@
-import { ShoppingCart, X } from "lucide-react";
-import { CartTiles } from "@/utils/menu";
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  PopoverBackdrop,
-  CloseButton,
-} from "@headlessui/react";
+"use client";
+
+import { CartTiles, type CartTileProps } from "@/utils/menu";
+import { CloseButton, Popover, PopoverBackdrop, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 
 export const CartNavbarBTN = () => {
-  return (
-    <Popover as="nav" className="relative">
-      <PopoverButton className="inline-flex items-center bg-btn-pill rounded-full px-3 py-2 lg:px-3 xl:px-5 lg:py-2 xl:py-3 focus:outline-none data-active:text-white data-focus:outline data-focus:outline-white data-hover:text-white z-40">
-        <ShoppingCart />
-        <p className="ml-2">Cart</p>
-      </PopoverButton>
-      <PopoverBackdrop
-        transition
-        className="fixed inset-0 bg-black/15 transition duration-100 ease-out data-closed:opacity-0"
-      />
+  const [items, setItems] = useState<CartTileProps[]>(CartTiles);
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const subtotal = useMemo(() => items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
+  const updateQuantity = (id: number, quantity: number) => setItems((current) => current.flatMap((item) => item.id !== id ? item : quantity > 0 ? [{ ...item, quantity }] : []));
 
-      <PopoverPanel
-        transition
-        anchor="top end"
-        className="divide-y divide-white/5 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0 w-80 px-3 py-5 mt-3 z-50"
-      >
-        <div className=" inline-flex justify-between w-full text-2xl font-normal">
-          <p>My Cart</p>
-          <CloseButton className="cursor-pointer">
-            <X size={35} />
-          </CloseButton>
-        </div>
-
-        {CartTiles.map((obj, ind) => (
-          <div
-            className="inline-flex w-full justify-between items-start py-2 cart-tile my-1"
-            key={ind}
-          >
-            <div className="inline-flex">
-              <Image src={obj.photoSrc} style={{}} alt={obj.name} />
-              <div className="px-2">
-                <p className=" 2xl:text-lg text-base">{obj.name} </p>
-                <p className="2xl:text-sm text-sm font-semibold">
-                  <span className=" bg-primary text-white p-1 rounded-b-sm rounded-tl-sm font-normal">
-                    {obj.quantity}
-                  </span>{" "}
-                  ${obj.price}
-                </p>
-              </div>
-            </div>
-            <X size={22} />
-          </div>
-        ))}
-
-        <div className=" mb-2">
-          <p className="font-bold">
-            Sub Total: <span>$30.98</span>
-          </p>
-        </div>
-
-        <button className="block w-full bg-primary text-center text-white rounded-md py-2 2xl:text-xl text-lg mt-1 font-semibold">
-          View Cart
-        </button>
-
-        <button className="block w-full bg-secondary text-black/85 mt-3 rounded-md 2xl:text-xl text-lg py-2 font-semibold">
-          Check Out
-        </button>
-      </PopoverPanel>
-    </Popover>
-  );
+  return <Popover as="div" className="relative"><PopoverButton aria-label={`Cart with ${itemCount} items`} className="relative inline-flex items-center rounded-full bg-btn-pill px-3 py-2 text-[11px] font-bold uppercase tracking-[0.07em] text-primary transition hover:bg-secondary-light focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-xs lg:px-4"><ShoppingCart size={17} aria-hidden="true" /><span className="ml-1.5 hidden lg:inline">Cart</span>{itemCount > 0 && <span className="ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-white">{itemCount}</span>}</PopoverButton><PopoverBackdrop transition className="fixed inset-0 z-40 bg-primary/10 backdrop-blur-[1px] transition duration-150 data-closed:opacity-0" /><PopoverPanel transition anchor="bottom end" className="z-50 mt-3 w-[min(24rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-primary/10 bg-white shadow-2xl shadow-primary/20 transition duration-200 ease-out [--anchor-gap:--spacing(8)] data-closed:-translate-y-2 data-closed:opacity-0"><div className="flex items-center justify-between bg-primary px-5 py-4 text-white"><div><p className="text-xs font-bold tracking-[0.15em] text-secondary-light">YOUR ORDER</p><h2 className="mt-1 text-xl font-extrabold">Cart ({itemCount})</h2></div><CloseButton aria-label="Close cart" className="rounded-lg p-1 transition hover:bg-white/10"><X size={21} /></CloseButton></div>{items.length ? <><div className="max-h-[min(24rem,60vh)] divide-y divide-primary/10 overflow-y-auto px-5">{items.map((item) => <div key={item.id} className="flex gap-3 py-4"><div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-secondary-light"><Image src={item.photoSrc} alt={item.name} fill sizes="56px" className="object-contain p-1" /></div><div className="min-w-0 flex-1"><p className="truncate text-sm font-extrabold text-primary">{item.name}</p><p className="mt-1 text-sm font-bold text-primary/70">${item.price.toFixed(2)}</p><div className="mt-2 flex items-center gap-2"><button type="button" aria-label={`Remove one ${item.name}`} onClick={() => updateQuantity(item.id, item.quantity - 1)} className="rounded-md border border-primary/20 p-1 text-primary hover:bg-secondary-light"><Minus size={14} /></button><span className="w-4 text-center text-xs font-bold text-primary">{item.quantity}</span><button type="button" aria-label={`Add one ${item.name}`} onClick={() => updateQuantity(item.id, item.quantity + 1)} className="rounded-md bg-primary p-1 text-white hover:bg-primary/90"><Plus size={14} /></button></div></div><button type="button" aria-label={`Remove ${item.name} from cart`} onClick={() => updateQuantity(item.id, 0)} className="self-start rounded-md p-1 text-primary/45 hover:bg-secondary-light hover:text-primary"><X size={17} /></button></div>)}</div><div className="border-t border-primary/10 bg-secondary-light/40 p-5"><div className="flex items-center justify-between text-base font-extrabold text-primary"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div><p className="mt-1 text-xs text-primary/60">Taxes and delivery are calculated at checkout.</p><div className="mt-4 grid grid-cols-2 gap-3"><CloseButton as={Link} href="/menu" className="inline-flex items-center justify-center rounded-xl border border-primary/25 px-3 py-2.5 text-sm font-bold text-primary transition hover:bg-secondary-light">Keep shopping</CloseButton><CloseButton className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-bold text-white transition hover:bg-primary/90"><ShoppingBag size={16} aria-hidden="true" /> Checkout</CloseButton></div></div></> : <div className="px-6 py-12 text-center"><ShoppingCart className="mx-auto text-primary/40" aria-hidden="true" /><p className="mt-3 font-extrabold text-primary">Your cart is empty</p><p className="mt-1 text-sm text-primary/60">Add something delicious to get started.</p><CloseButton as={Link} href="/menu" className="mt-5 inline-flex rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white">Browse menu</CloseButton></div>}</PopoverPanel></Popover>;
 };

@@ -25,11 +25,11 @@ export default function TextInput({
 
   return (
     <Field className={clsx("my-2")}>
-      <Label htmlFor={id} className={clsx("ml-3 font-semibold")}>
+      <Label htmlFor={id} className={clsx("ml-1 text-sm font-semibold")}>
         {label}
       </Label>
       {description && (
-        <Description className="text-sm/4 text-gray-700">
+        <Description className="text-xs/4 text-gray-700">
           {description}
         </Description>
       )}
@@ -38,8 +38,8 @@ export default function TextInput({
           type={inputType}
           id={id}
           className={clsx(
-            "mt-2 block w-full rounded-sm border bg-white/5 px-3 py-1.5 text-base/6 text-black border-gray-500",
-            "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25",
+            "mt-2 block w-full rounded-xl border border-primary/20 bg-white px-3.5 py-3 text-sm text-primary placeholder:text-primary/40",
+            "focus:not-data-focus:outline-none data-focus:border-primary data-focus:ring-4 data-focus:ring-primary/10",
             error && "border-red-500",
             isPassword && "pr-10",
             className,
@@ -58,7 +58,7 @@ export default function TextInput({
         )}
       </div>
 
-      {error && <p className=" ml-3 mt-1 text-sm text-red-500">{error}</p>}
+      {error && <p className="ml-3 mt-1 text-xs text-red-500">{error}</p>}
     </Field>
   );
 }

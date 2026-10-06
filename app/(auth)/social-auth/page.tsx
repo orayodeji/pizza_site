@@ -1,42 +1,17 @@
 "use client";
-import { useSearchParams } from "next/navigation";
 import FBLogo from "@/public/auth/auth_fb.png";
 import GLogo from "@/public/auth/auth_google.png";
-import Image from "next/image";
 import { Loader } from "@/components/UI/loader";
+import { CheckCircle2 } from "lucide-react";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+const DUMMY_USER = { name: "Alex Morgan", provider: "social" };
 export default function LoginSocial() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const colors = ["bg-red-700", "bg-yellow-500", "bg-green-400"];
-  const search = searchParams.get("social");
-  return (
-    <div className="md:py-8 xl:py-12 xl:px-48 social-auth ">
-      <p className="xl:text-2xl font-normal text-center mb-2">
-        Login via <span className="capitalize">{search}</span>
-      </p>
-
-      <div className="md:w-96 mx-auto bg-gray-200 rounded-xl min-h-96 flex-col flex">
-        <div className="h-10 inline-flex justify-start py-1 px-3 bg-gray-400 rounded-t-xl w-full items-center ">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              className={`px-1 rounded-full w-3 h-3 mr-1 ${colors[index]} `}
-              key={index}
-            ></div>
-          ))}
-        </div>
-        <div className="flex-1 flex flex-col rounded-b-xl justify-center items-center">
-          <Image
-            src={search === "google" ? GLogo : FBLogo}
-            alt="social logo"
-            style={{}}
-            className="mb-4"
-          />
-          <Loader />
-        </div>
-      </div>
-
-      <button className="md:w-80 mx-auto block rounded-lg text-white font-semibold py-3 bg-primary text-xl mt-2">
-        Logged in Successfully
-      </button>
-    </div>
-  );
+  const provider = searchParams.get("social") === "google" ? "google" : "facebook";
+  const [complete, setComplete] = useState(false);
+  useEffect(() => { const timer = window.setTimeout(() => { localStorage.setItem("pizza-bakery-user", JSON.stringify(DUMMY_USER)); setComplete(true); window.setTimeout(() => router.replace("/"), 500); }, 1800); return () => window.clearTimeout(timer); }, [router]);
+  return <div className="px-6 py-8 sm:px-10 sm:py-10"><div className="mx-auto max-w-md text-center"><p className="text-xs font-bold tracking-[0.16em] text-primary/60">SOCIAL SIGN IN</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Connecting to {provider === "google" ? "Google" : "Facebook"}</h1><p className="mt-3 text-sm leading-6 text-primary/60">We&apos;re securely signing you in. You&apos;ll be redirected home automatically.</p><div className="mt-8 overflow-hidden rounded-2xl border border-primary/10 bg-secondary-light/50 shadow-sm"><div className="flex gap-1.5 bg-primary/10 px-4 py-3"><span className="size-2.5 rounded-full bg-red-500" /><span className="size-2.5 rounded-full bg-secondary" /><span className="size-2.5 rounded-full bg-green-500" /></div><div className="flex min-h-60 flex-col items-center justify-center p-8"><Image src={provider === "google" ? GLogo : FBLogo} alt={`${provider} logo`} className="size-16" /><div className="mt-5">{complete ? <CheckCircle2 className="mx-auto size-8 text-green-700" aria-label="Sign in complete" /> : <Loader />}</div><p className="mt-4 text-sm font-bold text-primary">{complete ? "Signed in successfully" : "Confirming your account…"}</p></div></div></div></div>;
 }

@@ -1,90 +1,12 @@
 "use client";
 import TextInput from "@/components/UI/text-input";
-import { useState } from "react";
 import Correct from "@/public/auth/auth_correct.png";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { FormEvent, useState } from "react";
 export default function ResetPassword() {
-  const [form, setForm] = useState({
-    password: "",
-    confirmPassword: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((obj) => ({
-      ...obj,
-      [name]: value,
-    }));
-  };
-
-  const [showSuccess, setShowSuccess] = useState(true);
-
-  return (
-    <div className="md:py-8 xl:py-16 xl:px-48">
-      {!showSuccess && (
-        <>
-          <p className="xl:text-2xl font-normal text-center">Reset Password</p>
-
-          <div>
-            <TextInput
-              type="password"
-              label="New Password"
-              name="password"
-              placeholder="Enter new password"
-              value={form.password}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <TextInput
-              type="password"
-              label="Confirm New Password"
-              name="confirmPassword"
-              placeholder="Confirm new password"
-              value={form.confirmPassword}
-              onChange={handleChange}
-            />
-          </div>
-          <div className=" flex justify-center">
-            <button
-              type="submit"
-              className="mt-4 rounded-md px-4 py-4 w-11/12 text-xl disabled:bg-gray-400 disabled:text-gray-700 bg-primary hover:bg-secondary-light text-white font-semibold hover:text-black"
-            >
-              Change Password
-            </button>
-          </div>
-          <div className="flex justify-center pt-7 pb-3">
-            <Link
-              href={"/login"}
-              className=" block hover:underline text-xl font-semibold underline hover:scale-110"
-            >
-              Back to Login
-            </Link>
-          </div>
-        </>
-      )}
-
-      {showSuccess && (
-        <>
-          <div className="md:w-10/12 mx-auto bg-gray-200  rounded-xl min-h-68 flex-col flex justify-center items-center">
-            <Image src={Correct} alt="correct" style={{}} className="mb-4" />
-            <div>
-              <p className="text-2xl text-center font-semibold">
-                Password Reset Successfully
-              </p>
-            </div>
-          </div>
-          <div className=" flex justify-center">
-            <Link
-              href={"/login"}
-              className="mt-4 rounded-md px-4 py-4 w-9/12 text-xl disabled:bg-gray-400 disabled:text-gray-700 bg-primary hover:bg-secondary-light text-white font-semibold hover:text-black text-center"
-            >
-              Back to Login
-            </Link>
-          </div>
-        </>
-      )}
-    </div>
-  );
+  const [form, setForm] = useState({ password: "", confirmPassword: "" });
+  const [complete, setComplete] = useState(false);
+  if (complete) return <div className="px-6 py-10 text-center sm:px-10"><div className="mx-auto flex max-w-md flex-col items-center rounded-2xl bg-secondary-light/60 p-8"><Image src={Correct} alt="" className="size-18" /><h1 className="mt-4 text-2xl font-extrabold text-primary">Password reset successfully</h1><p className="mt-2 text-sm leading-6 text-primary/65">Your password has been updated. You can now sign in securely.</p><Link href="/login" className="mt-6 w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">Back to sign in</Link></div></div>;
+  return <div className="px-6 py-8 sm:px-10 sm:py-10"><div className="mx-auto max-w-md"><p className="text-xs font-bold tracking-[0.16em] text-primary/60">SECURE YOUR ACCOUNT</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Set a new password</h1><p className="mt-2 text-sm leading-6 text-primary/60">Choose a strong password you don&apos;t use elsewhere.</p><form onSubmit={(event: FormEvent) => { event.preventDefault(); if (form.password && form.password === form.confirmPassword) setComplete(true); }} className="mt-7 space-y-4"><TextInput label="New password" id="password" name="password" type="password" placeholder="Create a new password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /><TextInput label="Confirm new password" id="confirm-password" name="confirmPassword" type="password" placeholder="Repeat your password" value={form.confirmPassword} onChange={(event) => setForm({ ...form, confirmPassword: event.target.value })} /><button disabled={!form.password || form.password !== form.confirmPassword} type="submit" className="w-full rounded-xl bg-primary px-4 py-3.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">Update password</button></form><Link href="/login" className="mt-6 block text-center text-sm font-bold text-primary underline underline-offset-4">Back to sign in</Link></div></div>;
 }

@@ -1,39 +1,67 @@
 "use client";
-import { UserRound, ShoppingCart } from "lucide-react";
+import { UserRound } from "lucide-react";
 import NavLink from "./navlink";
 import Image from "next/image";
 import LogoImage from "@/public/img/logo.png";
 import { CartNavbarBTN } from "./cart-navbar-btn";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 export function Navbar() {
+  const [userName, setUserName] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const savedUser = localStorage.getItem("pizza-bakery-user");
+      return savedUser ? (JSON.parse(savedUser) as { name?: string }).name ?? null : null;
+    } catch {
+      localStorage.removeItem("pizza-bakery-user");
+      return null;
+    }
+  });
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        const savedUser = localStorage.getItem("pizza-bakery-user");
+        setUserName(savedUser ? (JSON.parse(savedUser) as { name?: string }).name ?? null : null);
+      } catch {
+        setUserName(null);
+      }
+    };
+    window.addEventListener("pizza-bakery-user-change", syncUser);
+    window.addEventListener("storage", syncUser);
+    return () => {
+      window.removeEventListener("pizza-bakery-user-change", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
+  }, []);
   return (
-    <nav className="inline-flex items-center justify-between bg-white fixed top-0 left-0 right-0 z-30 min-h-24">
+    <nav aria-label="Main navigation" className="fixed inset-x-0 top-0 z-30 flex min-h-24 items-center justify-between border-b border-primary/10 bg-white/95 px-3 shadow-sm backdrop-blur sm:px-5">
       {/* first navlink */}
-      <div className="inline-flex justify-around flex-1">
+      <div className="flex flex-1 items-center justify-center gap-1 sm:gap-3 lg:gap-6">
         {/* navlink */}
         <NavLink text={"Home"} path={"/"} />
         <NavLink text={"Menu"} path={"/menu"} />
         <NavLink text={"Deals"} path={"/deals"} />
       </div>
       {/* Logo Image */}
-      <div className="navbar-img">
+      <div className="navbar-img shrink-0 px-2">
         <Image src={LogoImage} alt="logo picture" style={{}} />
       </div>
 
       {/* second navlink */}
-      <div className="flex-1 justify-around inline-flex items-center">
+      <div className="flex flex-1 items-center justify-center gap-1 sm:gap-3 lg:gap-6">
         {/* navlink */}
-        <NavLink text="Stores" path="#" />
-        <NavLink text="Tracker" path="#" />
+        <NavLink text="Stores" path="/stores" />
+        <NavLink text="Tracker" path="/tracker" />
 
-        <div className="lg:text-sm md:text-xm xl:text-base inline-flex">
+        <div className="inline-flex items-center gap-2">
           {/* siguup and logn  */}
           <Link
-            href={"/login"}
-            className="inline-flex items-center bg-btn-pill rounded-full  px-3 py-2 lg:px-3 xl:px-5 lg:py-2 xl:py-3  xl:mr-4 lg:mr-2"
+            href={userName ? "/profile" : "/login"}
+            aria-label={userName ? `Open ${userName}'s profile` : "Login or sign up"}
+            className="inline-flex items-center rounded-full bg-btn-pill px-3 py-2 text-[11px] font-bold uppercase tracking-[0.07em] text-primary transition hover:bg-secondary-light sm:text-xs lg:px-4"
           >
-            <UserRound />
-            <p className="ml-2">Login/Signup</p>
+            <UserRound size={17} aria-hidden="true" />
+            <span className="ml-1.5 hidden lg:inline">{userName ?? "Login / Sign up"}</span>
           </Link>
 
           {/* shopping cart */}
