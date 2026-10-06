@@ -5,9 +5,17 @@ import { Loader } from "@/components/UI/loader";
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 const DUMMY_USER = { name: "Alex Morgan", provider: "social" };
 export default function LoginSocial() {
+  return (
+    <Suspense fallback={null}>
+      <LoginSocialContent />
+    </Suspense>
+  );
+}
+
+function LoginSocialContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const provider =
