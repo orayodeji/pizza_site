@@ -1,3 +1,6 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import logo1 from "@/public/footer/footer_fb.png";
@@ -31,6 +34,29 @@ const socialLinks: { label: string; image: StaticImageData }[] = [
   { label: "Twitter", image: logo4 },
 ];
 
+function subscribeToSession(onChange: () => void) {
+  window.addEventListener("pizza-bakery-user-change", onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener("pizza-bakery-user-change", onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function isLoggedIn() {
+  try {
+    const savedUser = localStorage.getItem("pizza-bakery-user");
+    const user = savedUser ? JSON.parse(savedUser) : null;
+    return typeof user?.name === "string" && user.name.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+function getServerSession() {
+  return false;
+}
+
 function FooterLinkGroup({
   title,
   links,
@@ -60,6 +86,13 @@ function FooterLinkGroup({
 }
 
 export function Footer() {
+  const loggedIn = useSyncExternalStore(subscribeToSession, isLoggedIn, getServerSession);
+  const accountSupportLinks = supportLinks.map((link) =>
+    link.href === "/profile" && !loggedIn
+      ? { label: "Login / Sign up", href: "/login" }
+      : link,
+  );
+
   return (
     <footer className="relative overflow-hidden bg-primary text-white">
       <Image
@@ -109,7 +142,7 @@ export function Footer() {
             </div>
           </div>
           <FooterLinkGroup title="Explore" links={exploreLinks} />
-          <FooterLinkGroup title="Support" links={supportLinks} />
+          <FooterLinkGroup title="Support" links={accountSupportLinks} />
           <FooterLinkGroup title="Information" links={legalLinks} />
         </div>
         <div className="mt-12 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
